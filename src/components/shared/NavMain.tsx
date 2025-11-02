@@ -14,7 +14,7 @@ import {
   SidebarMenuSubButton,
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
-import { useLocation } from "react-router";
+import { Link, useLocation } from "react-router";
 
 interface NavMainProps {
   items: {
@@ -52,12 +52,12 @@ export function NavMain({ items }: NavMainProps) {
                 <Collapsible asChild defaultOpen={active} className="group/collapsible">
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
-                      <SidebarMenuSubButton asChild>
+                      <SidebarMenuSubButton className="cursor-pointer" asChild>
                         <div className="flex items-center justify-between w-full">
-                          <a href={item.url} className="flex items-center gap-2">
+                          <Link to={item.url} className="flex items-center gap-2">
                             {item.icon && <item.icon className="size-4" />}
                             <span>{item.title}</span>
-                          </a>
+                          </Link>
                           <ChevronRight className="ml-auto size-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                         </div>
                       </SidebarMenuSubButton>
@@ -66,11 +66,11 @@ export function NavMain({ items }: NavMainProps) {
                   </SidebarMenuItem>
                 </Collapsible>
               ) : (
-                <SidebarMenuSubButton asChild>
-                  <a href={item.url}>
+                <SidebarMenuSubButton className="cursor-pointer" asChild>
+                  <Link to={item.url}>
                     {item.icon && <item.icon className="size-4" />}
                     <span>{item.title}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuSubButton>
               )}
             </SidebarMenuSubItem>
@@ -94,7 +94,7 @@ export function NavMain({ items }: NavMainProps) {
                 <Collapsible asChild defaultOpen={active} className="group/collapsible">
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
-                      <SidebarMenuButton tooltip={item.title}>
+                      <SidebarMenuButton className="cursor-pointer" tooltip={item.title}>  
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>
                         <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -105,10 +105,10 @@ export function NavMain({ items }: NavMainProps) {
                 </Collapsible>
               ) : (
                 <SidebarMenuButton asChild tooltip={item.title}>
-                  <a href={item.url} className="flex items-center gap-2">
+                  <Link to={item.url} className="flex items-center gap-2">
                     {item.icon && <item.icon />}
                     <span>{item.title}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               )}
             </SidebarMenuItem>

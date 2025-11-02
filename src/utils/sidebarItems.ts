@@ -1,11 +1,11 @@
 import UserList from "@/modules/user/UserList";
 import type { SidebarItem } from "@/types/sidebar";
-import { 
-  LayoutDashboard, 
-  Users, 
-  Settings, 
+import {
+  LayoutDashboard,
+  Users,
+  Settings,
   FileText,
-  ShoppingCart 
+  ShoppingCart,
 } from "lucide-react";
 
 export const sidebarItems: SidebarItem[] = [
@@ -32,6 +32,30 @@ export const sidebarItems: SidebarItem[] = [
           {
             title: "Create User",
             url: "/dashboard/users/create",
+            items: [
+              {
+                title: "Anyting",
+                url: "/dashboar/users/anything",
+                items: [
+                  {
+                    title: "Anyting2",
+                    url: "/dashboar/users/anything2",
+                    items: [
+                      {
+                        title: "Anyting3",
+                        url: "/dashboar/users/anything3",
+                        items: [
+                          {
+                            title: "Anyting4",
+                            url: "/dashboar/users/anything4",
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                ],
+              },
+            ],
           },
         ],
       },

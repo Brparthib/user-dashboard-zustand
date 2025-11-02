@@ -9,6 +9,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useUserStore } from "@/store/userStore";
 
 function formatDate(date: Date | undefined) {
   if (!date) {
@@ -36,6 +37,13 @@ export default function DateInput() {
   );
   const [month, setMonth] = React.useState<Date | undefined>(date);
   const [value, setValue] = React.useState(formatDate(date));
+  const { setDob } = useUserStore();
+
+  React.useEffect(() => {
+    if (date) {
+      setDob(date.toISOString());
+    }
+  }, [date]);
 
   return (
     <div className="flex flex-col gap-3">

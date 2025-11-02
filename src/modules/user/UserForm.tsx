@@ -20,18 +20,19 @@ import { TrashIcon } from "lucide-react";
 import { designations, skillOptions } from "@/constants/selectOptions";
 import { useUserStore } from "@/store/userStore";
 import { useFormStore } from "@/store/formStore";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import type { User } from "@/types/user";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
   email: z.email(),
+  phone: z.string(),
   bio: z.string().min(2, {
     message: "Bio must be at least 2 characters.",
   }),
-  image: z.string(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -44,17 +45,22 @@ export function UserForm() {
     setModalOpen,
     seletedUserId,
     setSelectedUserId,
+    dob,
+    setLoading,
   } = useUserStore();
   const { imagePreview, setImagePreview } = useFormStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [gender, setGender] = useState<string>("male");
+  const [designation, setDesignation] = useState<string>("");
+  const [skills, setSkills] = useState<string[]>([]);
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: getUser(seletedUserId as number)?.name,
       email: getUser(seletedUserId as number)?.email,
+      phone: getUser(seletedUserId as number)?.phone,
       bio: getUser(seletedUserId as number)?.bio,
-      image: "",
     },
   });
 
@@ -67,12 +73,12 @@ export function UserForm() {
     const file = e.target.files[0];
 
     if (!file.type.startsWith("image/")) {
-      form.setError("image", { message: "Please upload an image file" });
+      console.log("Please upload an image file");
       return;
     }
 
     if (file.size > 2 * 1024 * 1024) {
-      form.setError("image", { message: "File size should be less than 5MB" });
+      console.log("File size should be less than 5MB");
       return;
     }
 
@@ -81,22 +87,37 @@ export function UserForm() {
     reader.onload = (e) => {
       const previewUrl = e.target?.result as string;
       setImagePreview(previewUrl);
-      form.setValue("image", previewUrl);
     };
     reader.readAsDataURL(file);
   };
 
+  console.log("Skills: ", skills);
+
   // form submission
   const onSubmit = async (data: FormData) => {
+    const toastId = seletedUserId
+      ? toast.loading("Updating User...")
+      : toast.loading("Creating User...");
+    const userData: User = {
+      ...data,
+      phone: "01234567891",
+      dob,
+      gender,
+      designation,
+      skills,
+      image: "",
+    };
+
     if (seletedUserId) {
-      updateUser(seletedUserId, data);
+      updateUser(seletedUserId, userData);
       setModalOpen(false);
       setSelectedUserId(0);
+      toast.success("User Updated successfully.", { id: toastId });
     } else {
-      addUser(data as User);
+      addUser(userData as User);
       setModalOpen(false);
+      toast.success("User Created Successfully.", { id: toastId });
     }
-    // addUser(data as User);
   };
 
   return (
@@ -139,7 +160,38 @@ export function UserForm() {
             )}
           />
         </div>
-        {/* dob, gender and designation field */}
+        {/* phone and designation field */}
+        <div className="md:flex justify-between items-start gap-4">
+          <FormField
+            control={form.control}
+            name="phone"
+            render={({ field }) => (
+              <FormItem className="grow">
+                <FormLabel className="text-sm">Phone</FormLabel>
+                <FormControl>
+                  <Input
+                    className="text-xs"
+                    placeholder="Your email address"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {/* select */}
+          <div className="grow">
+            <Label className="mb-2">Designation</Label>
+            <Select
+              className="w-full"
+              options={designations}
+              onChange={(
+                value: SingleValue<{ value: string; label: string }>
+              ) => setDesignation(value?.value as string)}
+            />
+          </div>
+        </div>
+        {/* dob and gender field */}
         <div className="space-y-4 md:space-y-0 md:flex justify-between items-start gap-4">
           {/* date picker */}
           <div className="grow items-start">
@@ -148,7 +200,11 @@ export function UserForm() {
           {/* gender */}
           <div className="grow items-start">
             <Label className="mb-4">Gender</Label>
-            <RadioGroup className="flex items-center">
+            <RadioGroup
+              value={gender}
+              onValueChange={setGender}
+              className="flex items-center"
+            >
               {["male", "female"].map((gender, i) => (
                 <div key={i} className="flex items-center space-x-2">
                   <RadioGroupItem value={gender} id={gender} />
@@ -159,11 +215,6 @@ export function UserForm() {
               ))}
             </RadioGroup>
           </div>
-          {/* select */}
-          <div className="grow">
-            <Label className="mb-2">Designation</Label>
-            <Select options={designations} />
-          </div>
         </div>
         {/* skills field */}
         <div className="">
@@ -173,6 +224,12 @@ export function UserForm() {
             isMulti
             name="skills"
             options={skillOptions}
+            onChange={(
+              values: MultiValue<{ value: string; label: string }>
+            ) => {
+              const selectedSkills = values.map((v) => v.value);
+              setSkills(selectedSkills);
+            }}
             classNamePrefix="select"
           />
         </div>
@@ -231,7 +288,7 @@ export function UserForm() {
           </div>
         </div>
         <div className="flex justify-end items-center gap-2">
-          <Button type="submit" className="">
+          <Button type="submit" className="cursor-pointer active:scale-95">
             Submit
           </Button>
         </div>

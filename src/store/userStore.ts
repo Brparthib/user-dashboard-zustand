@@ -6,6 +6,7 @@ interface UserState {
   users: User[];
   modalOpen: boolean;
   formType: "create" | "update";
+  dob: string;
   seletedUserId: number | null;
   alertOpen: boolean;
   // new states for filtering pagination and search
@@ -21,23 +22,29 @@ interface UserState {
   // setters
   setModalOpen: (value: boolean) => void;
   setFormType: (value: "create" | "update") => void;
+  setDob: (value: string) => void;
   setSelectedUserId: (id: number) => void;
   setAlertOpen: (value: boolean) => void;
   setFilters: (filters: Partial<UserState["filters"]>) => void;
   setSearchQuery: (query: string) => void;
   setCurrentPage: (page: number) => void;
   setLoading: (loading: boolean) => void;
-  // Actions
+  // actions
   addUser: (user: User) => void;
   updateUser: (id: number, user: Partial<User>) => void;
   deleteUser: (id: number) => void;
   getUser: (id: number) => User | undefined;
+  // computed values
+  getFilteredUsers: () => User[];
+  getPaginatedUsers: () => User[];
+  getTotalPages: () => number;
 }
 
 export const useUserStore = create<UserState>((set, get) => ({
   users: initialUsers,
   modalOpen: false,
   formType: "create",
+  dob: "",
   seletedUserId: null,
   alertOpen: false,
   filters: {
@@ -47,7 +54,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   },
   searchQuery: "",
   currentPage: 1,
-  itemsPerPage: 10,
+  itemsPerPage: 5,
   loading: false,
 
   setModalOpen: (value: boolean) => {
@@ -56,6 +63,10 @@ export const useUserStore = create<UserState>((set, get) => ({
 
   setFormType: (value: "create" | "update") => {
     set({ formType: value });
+  },
+
+  setDob: (value: string) => {
+    set({ dob: value });
   },
 
   setSelectedUserId: (value: number | null) => {
@@ -96,6 +107,7 @@ export const useUserStore = create<UserState>((set, get) => ({
 
     set((state) => ({
       users: [...state.users, newUser],
+      loading: false
     }));
   },
 
@@ -117,7 +129,8 @@ export const useUserStore = create<UserState>((set, get) => ({
     return get().users.find((user) => user.id === id);
   },
 
-  getFilterUsers: () => {
+  // filter users
+  getFilteredUsers: () => {
     const { users, filters, searchQuery } = get();
 
     return users.filter((user) => {
@@ -147,5 +160,24 @@ export const useUserStore = create<UserState>((set, get) => ({
         matchesSearch && matchesGender && matchesDesignation && matchesDobYear
       );
     });
+  },
+
+  // get user per page
+  getPaginatedUsers: () => {
+    const filteredUsers = get().getFilteredUsers();
+    const { currentPage, itemsPerPage } = get();
+
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+
+    return filteredUsers.slice(startIndex, endIndex);
+  },
+
+  // total pages
+  getTotalPages: () => {
+    const filteredUsers = get().getFilteredUsers();
+    const { itemsPerPage } = get();
+
+    return Math.ceil(filteredUsers.length / itemsPerPage);
   },
 }));
