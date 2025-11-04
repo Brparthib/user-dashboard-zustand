@@ -7,7 +7,7 @@ interface UserState {
   modalOpen: boolean;
   formType: "create" | "update";
   dob: string;
-  seletedUserId: number | null;
+  selectedUserId: number | null;
   alertOpen: boolean;
   // new states for filtering pagination and search
   filters: {
@@ -48,7 +48,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   modalOpen: false,
   formType: "create",
   dob: "",
-  seletedUserId: null,
+  selectedUserId: null,
   alertOpen: false,
   filters: {
     gender: "",
@@ -74,7 +74,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   },
 
   setSelectedUserId: (value: number | null) => {
-    set({ seletedUserId: value });
+    set({ selectedUserId: value });
   },
 
   setAlertOpen: (value: boolean) => {

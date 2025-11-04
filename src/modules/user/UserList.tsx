@@ -79,7 +79,7 @@ export default function UserList() {
     setFilters({ [key]: value });
   };
 
-  const hanglePageChange = (page: number) => {
+  const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
@@ -235,7 +235,7 @@ export default function UserList() {
         <PaginationButtons
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={hanglePageChange}
+          onPageChange={handlePageChange}
         />
 
         {/* Modal */}

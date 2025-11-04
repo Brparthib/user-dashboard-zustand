@@ -43,10 +43,9 @@ export function UserForm() {
     updateUser,
     getUser,
     setModalOpen,
-    seletedUserId,
+    selectedUserId,
     setSelectedUserId,
     dob,
-    setLoading,
   } = useUserStore();
   const { imagePreview, setImagePreview } = useFormStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -57,10 +56,10 @@ export function UserForm() {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: getUser(seletedUserId as number)?.name,
-      email: getUser(seletedUserId as number)?.email,
-      phone: getUser(seletedUserId as number)?.phone,
-      bio: getUser(seletedUserId as number)?.bio,
+      name: getUser(selectedUserId as number)?.name,
+      email: getUser(selectedUserId as number)?.email,
+      phone: getUser(selectedUserId as number)?.phone,
+      bio: getUser(selectedUserId as number)?.bio,
     },
   });
 
@@ -95,7 +94,7 @@ export function UserForm() {
 
   // form submission
   const onSubmit = async (data: FormData) => {
-    const toastId = seletedUserId
+    const toastId = selectedUserId
       ? toast.loading("Updating User...")
       : toast.loading("Creating User...");
     const userData: User = {
@@ -108,8 +107,8 @@ export function UserForm() {
       image: "",
     };
 
-    if (seletedUserId) {
-      updateUser(seletedUserId, userData);
+    if (selectedUserId) {
+      updateUser(selectedUserId, userData);
       setModalOpen(false);
       setSelectedUserId(0);
       toast.success("User Updated successfully.", { id: toastId });

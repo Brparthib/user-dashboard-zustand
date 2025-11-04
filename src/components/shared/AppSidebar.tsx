@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/sidebar";
 import { sidebarItems } from "@/utils/sidebarItems";
 import { useUserStore } from "@/store/userStore";
-import { LayoutDashboardIcon } from "lucide-react";
 
 // This is sample data.
 const data = {
