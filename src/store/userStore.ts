@@ -18,6 +18,7 @@ interface UserState {
   searchQuery: string;
   currentPage: number;
   itemsPerPage: number;
+  sidebarOpen: boolean;
   loading: boolean;
   // setters
   setModalOpen: (value: boolean) => void;
@@ -28,6 +29,8 @@ interface UserState {
   setFilters: (filters: Partial<UserState["filters"]>) => void;
   setSearchQuery: (query: string) => void;
   setCurrentPage: (page: number) => void;
+  setItemsPerPage: (page: number) => void;
+  setSidebarOpen: (value: boolean) => void;
   setLoading: (loading: boolean) => void;
   // actions
   addUser: (user: User) => void;
@@ -55,6 +58,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   searchQuery: "",
   currentPage: 1,
   itemsPerPage: 5,
+  sidebarOpen: true,
   loading: false,
 
   setModalOpen: (value: boolean) => {
@@ -95,6 +99,14 @@ export const useUserStore = create<UserState>((set, get) => ({
     set({ currentPage: page });
   },
 
+  setItemsPerPage: (items) => {
+    set({ itemsPerPage: items });
+  },
+
+  setSidebarOpen: (value) => {
+    set({ sidebarOpen: value });
+  },
+
   setLoading: (loading) => {
     set({ loading });
   },
@@ -107,7 +119,7 @@ export const useUserStore = create<UserState>((set, get) => ({
 
     set((state) => ({
       users: [...state.users, newUser],
-      loading: false
+      loading: false,
     }));
   },
 

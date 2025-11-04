@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
 import Loader from "@/components/shared/Loader";
+import { FunnelPlus, FunnelX } from "lucide-react";
 
 export default function UserList() {
   const {
@@ -39,11 +40,13 @@ export default function UserList() {
     setSearchQuery,
     currentPage,
     setCurrentPage,
+    setItemsPerPage,
     getPaginatedUsers,
     getTotalPages,
     loading,
   } = useUserStore();
 
+  const [onFilters, setOnFilters] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState(searchQuery);
 
   // get unique gender and designation for filters
@@ -83,66 +86,37 @@ export default function UserList() {
   const displayedUsers = getPaginatedUsers();
   const totalPages = getTotalPages();
 
-  if(loading){
-    return <Loader />
+  if (loading) {
+    return <Loader />;
   }
 
   return (
     <>
       <div>
-        <div className="flex justify-between mb-4">
-          <div>
-            <div className="flex items-center gap-2">
-              {/* search input */}
-              <Input
-                placeholder="Search by name, email or phone."
-                className="md:w-[300px]"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-              />
-              {/* gender filter */}
-              <Select
-                onValueChange={(value) => handleFilterChange("gender", value)}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  {uniqueGenders.map((gender) => (
-                    <SelectItem value={gender}>{gender}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {/* designation filter */}
-              <Select
-                onValueChange={(value) =>
-                  handleFilterChange("designation", value)
-                }
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Designation" />
-                </SelectTrigger>
-                <SelectContent>
-                  {uniqueDesignations.map((designation) => (
-                    <SelectItem value={designation}>{designation}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              {/* dob year filter */}
-              <Select
-                onValueChange={(value) => handleFilterChange("dobYear", value)}
-              >
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Birth Year" />
-                </SelectTrigger>
-                <SelectContent>
-                  {dobYears.map((year) => (
-                    <SelectItem value={year}>{year}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+        <div className="flex justify-end gap-2 mb-4">
+          {/* filters toggle button */}
+          <Button
+            onClick={() => setOnFilters(!onFilters)}
+            variant="outline"
+            size="sm"
+            className="cursor-pointer"
+          >
+            {onFilters ? <FunnelPlus /> : <FunnelX />}
+          </Button>
+          {/* user per page */}
+          <Select
+            onValueChange={(value) => setItemsPerPage(Number(value) as number)}
+          >
+            <SelectTrigger size="sm" className="w-[100px]">
+              <SelectValue placeholder="Items" />
+            </SelectTrigger>
+            <SelectContent>
+              {[2, 4, 6, 8, 10].map((item: number) => (
+                <SelectItem value={item.toString()}>{item}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {/* create user button */}
           <Button
             onClick={() => {
               setFormType("create");
@@ -154,6 +128,57 @@ export default function UserList() {
           >
             Create User
           </Button>
+        </div>
+        {/* filters */}
+        <div
+          className={`${onFilters ? "flex" : "hidden"} items-center gap-2 mb-4`}
+        >
+          {/* search input */}
+          <Input
+            placeholder="Search by name, email or phone."
+            className="md:w-[250px]"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+          />
+          {/* gender filter */}
+          <Select
+            onValueChange={(value) => handleFilterChange("gender", value)}
+          >
+            <SelectTrigger className="w-[150px]">
+              <SelectValue placeholder="Gender" />
+            </SelectTrigger>
+            <SelectContent>
+              {uniqueGenders.map((gender) => (
+                <SelectItem value={gender}>{gender}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {/* designation filter */}
+          <Select
+            onValueChange={(value) => handleFilterChange("designation", value)}
+          >
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Designation" />
+            </SelectTrigger>
+            <SelectContent className="h-[150px]">
+              {uniqueDesignations.map((designation) => (
+                <SelectItem value={designation}>{designation}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          {/* dob year filter */}
+          <Select
+            onValueChange={(value) => handleFilterChange("dobYear", value)}
+          >
+            <SelectTrigger className="w-[130px]">
+              <SelectValue placeholder="Birth Year" />
+            </SelectTrigger>
+            <SelectContent className="h-[150px]">
+              {dobYears.map((year) => (
+                <SelectItem value={year}>{year}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
         {/* User list table */}
         <Table>
@@ -185,7 +210,7 @@ export default function UserList() {
                   <TableCell>
                     <Badge
                       variant="secondary"
-                      className="select-none capitalize"
+                      className="select-none capitalize dark:bg-primary dark:text-black"
                     >
                       {user.gender}
                     </Badge>

@@ -27,6 +27,7 @@ interface NavMainProps {
 }
 
 export function NavMain({ items }: NavMainProps) {
+  console.log(items);
   const location = useLocation();
 
   // Check if the current route matches or is a child
@@ -35,6 +36,7 @@ export function NavMain({ items }: NavMainProps) {
     if (item.items) {
       return item.items.some((child) => isItemActive(child));
     }
+
     return false;
   };
 
@@ -49,12 +51,19 @@ export function NavMain({ items }: NavMainProps) {
           return (
             <SidebarMenuSubItem key={item.title}>
               {hasChildren ? (
-                <Collapsible asChild defaultOpen={active} className="group/collapsible">
+                <Collapsible
+                  asChild
+                  defaultOpen={active}
+                  className="group/collapsible"
+                >
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                       <SidebarMenuSubButton className="cursor-pointer" asChild>
                         <div className="flex items-center justify-between w-full">
-                          <Link to={item.url} className="flex items-center gap-2">
+                          <Link
+                            to={item.url}
+                            className="flex items-center gap-2"
+                          >
                             {item.icon && <item.icon className="size-4" />}
                             <span>{item.title}</span>
                           </Link>
@@ -62,11 +71,16 @@ export function NavMain({ items }: NavMainProps) {
                         </div>
                       </SidebarMenuSubButton>
                     </CollapsibleTrigger>
-                    <CollapsibleContent>{renderItems(item.items!)}</CollapsibleContent>
+                    <CollapsibleContent>
+                      {renderItems(item.items!)}
+                    </CollapsibleContent>
                   </SidebarMenuItem>
                 </Collapsible>
               ) : (
-                <SidebarMenuSubButton className="cursor-pointer" asChild>
+                <SidebarMenuSubButton
+                  className={`${active && "bg-primary"} cursor-pointer`}
+                  asChild
+                >
                   <Link to={item.url}>
                     {item.icon && <item.icon className="size-4" />}
                     <span>{item.title}</span>
@@ -91,16 +105,22 @@ export function NavMain({ items }: NavMainProps) {
           return (
             <SidebarMenuItem key={item.title}>
               {hasChildren ? (
-                <Collapsible asChild defaultOpen={active} className="group/collapsible">
+                <Collapsible
+                  asChild
+                  defaultOpen={active}
+                  className="group/collapsible"
+                >
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
-                      <SidebarMenuButton className="cursor-pointer" tooltip={item.title}>  
+                      <SidebarMenuButton tooltip={item.title}>
                         {item.icon && <item.icon />}
                         <span>{item.title}</span>
                         <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                       </SidebarMenuButton>
                     </CollapsibleTrigger>
-                    <CollapsibleContent>{renderItems(item.items!)}</CollapsibleContent>
+                    <CollapsibleContent>
+                      {renderItems(item.items!)}
+                    </CollapsibleContent>
                   </SidebarMenuItem>
                 </Collapsible>
               ) : (
