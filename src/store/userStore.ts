@@ -41,6 +41,7 @@ interface UserState {
   getFilteredUsers: () => User[];
   getPaginatedUsers: () => User[];
   getTotalPages: () => number;
+  getTotalByGender: () => {totalMaleUser: number, totalFemaleUser: number};
 }
 
 export const useUserStore = create<UserState>((set, get) => ({
@@ -191,5 +192,16 @@ export const useUserStore = create<UserState>((set, get) => ({
     const { itemsPerPage } = get();
 
     return Math.ceil(filteredUsers.length / itemsPerPage);
+  },
+
+  // total male user count
+  getTotalByGender: () => {
+    const totalMale = get().users.filter((user) => user.gender === "Male");
+    const totalFemale = get().users.filter((user) => user.gender === "Female");
+
+    const totalMaleUser = totalMale.length;
+    const totalFemaleUser = totalFemale.length;
+
+    return { totalMaleUser, totalFemaleUser };
   },
 }));

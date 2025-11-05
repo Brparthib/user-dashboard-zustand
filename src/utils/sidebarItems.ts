@@ -11,7 +11,7 @@ import {
 export const sidebarItems: SidebarItem[] = [
   {
     title: "Dashboard",
-    url: "/dashboard",
+    url: "/",
     icon: LayoutDashboard,
     isActive: true,
   },

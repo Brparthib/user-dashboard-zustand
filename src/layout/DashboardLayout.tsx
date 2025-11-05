@@ -22,7 +22,6 @@ export default function DashboardLayout() {
   const pathSegments = location.pathname
     .split("/")
     .filter((segments) => segments !== "");
-  console.log(pathSegments); // ['', 'dashboard', 'users', 'list']
   const { sidebarOpen, setSidebarOpen } = useUserStore();
 
   return (
