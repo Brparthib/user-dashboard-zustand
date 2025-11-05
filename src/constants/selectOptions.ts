@@ -29,3 +29,18 @@ export const designations = [
   { value: "project_manager", label: "Project Manager" },
   { value: "technical_architect", label: "Technical Architect" },
 ];
+
+export const genderOptions = [
+  { value: "Male", label: "Male" },
+  { value: "Female", label: "Female" },
+];
+
+export const perPageOptions = [
+  { value: 2, label: 2 },
+  { value: 4, label: 4 },
+  { value: 6, label: 6 },
+  { value: 8, label: 8 },
+  { value: 10, label: 10 },
+];
+
+export const defaultPerPage = { value: 2, label: 2 };

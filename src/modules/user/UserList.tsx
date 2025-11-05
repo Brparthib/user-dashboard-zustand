@@ -15,16 +15,14 @@ import { useUserStore } from "@/store/userStore";
 import Alert from "@/components/shared/AlertDialog";
 import { PaginationButtons } from "@/components/shared/PaginationButtons";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { useEffect, useState } from "react";
+import Select, { type SingleValue } from "react-select";
+import { useEffect, useState, useRef } from "react";
 import Loader from "@/components/shared/Loader";
 import { FunnelPlus, FunnelX } from "lucide-react";
+import {
+  genderOptions,
+  perPageOptions,
+} from "@/constants/selectOptions";
 
 export default function UserList() {
   const {
@@ -48,11 +46,16 @@ export default function UserList() {
 
   const [onFilters, setOnFilters] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState(searchQuery);
+  
+  // Refs for select components to clear their values
+  const genderSelectRef = useRef<any>(null);
+  const designationSelectRef = useRef<any>(null);
+  const dobYearSelectRef = useRef<any>(null);
 
   // get unique gender and designation for filters
-  const uniqueGenders = Array.from(
-    new Set(useUserStore.getState().users.map((user) => user.gender))
-  );
+  // const uniqueGenders = Array.from(
+  //   new Set(useUserStore.getState().users.map((user) => user.gender))
+  // );
   const uniqueDesignations = Array.from(
     new Set(useUserStore.getState().users.map((user) => user.designation))
   );
@@ -83,6 +86,29 @@ export default function UserList() {
     setCurrentPage(page);
   };
 
+  const handleClearFilters = () => {
+    // Clear all filters in store
+    setFilters({
+      gender: "",
+      designation: "",
+      dobYear: "",
+    });
+    
+    // Clear search input
+    setSearchInput("");
+    
+    // Clear select components using refs
+    if (genderSelectRef.current) {
+      genderSelectRef.current.setValue(null);
+    }
+    if (designationSelectRef.current) {
+      designationSelectRef.current.setValue(null);
+    }
+    if (dobYearSelectRef.current) {
+      dobYearSelectRef.current.setValue(null);
+    }
+  };
+
   const displayedUsers = getPaginatedUsers();
   const totalPages = getTotalPages();
 
@@ -90,9 +116,24 @@ export default function UserList() {
     return <Loader />;
   }
 
+  // const genderOptions = uniqueGenders.map((gender) => ({
+  //   value: gender,
+  //   label: gender
+  // }))
+
+  const designationOptions = uniqueDesignations.map((designation) => ({
+    value: designation,
+    label: designation,
+  }));
+
+  const dobYearOptions = dobYears.map((year) => ({
+    value: year,
+    label: year,
+  }));
+
   return (
     <>
-      <div>
+      <div className="px-6">
         <div className="flex justify-end gap-2 mb-4">
           {/* filters toggle button */}
           <Button
@@ -105,17 +146,15 @@ export default function UserList() {
           </Button>
           {/* user per page */}
           <Select
-            onValueChange={(value) => setItemsPerPage(Number(value) as number)}
-          >
-            <SelectTrigger size="sm" className="w-[100px]">
-              <SelectValue placeholder="Items" />
-            </SelectTrigger>
-            <SelectContent>
-              {[2, 4, 6, 8, 10].map((item: number) => (
-                <SelectItem value={item.toString()}>{item}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            className="w-[100px]"
+            options={perPageOptions}
+            onChange={(
+              value: SingleValue<{
+                value: number;
+                label: number;
+              }>
+            ) => setItemsPerPage(Number(value?.value))}
+          />
           {/* create user button */}
           <Button
             onClick={() => {
@@ -142,43 +181,56 @@ export default function UserList() {
           />
           {/* gender filter */}
           <Select
-            onValueChange={(value) => handleFilterChange("gender", value)}
-          >
-            <SelectTrigger className="w-[150px]">
-              <SelectValue placeholder="Gender" />
-            </SelectTrigger>
-            <SelectContent>
-              {uniqueGenders.map((gender) => (
-                <SelectItem value={gender}>{gender}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            ref={genderSelectRef}
+            className="w-[150px]"
+            options={genderOptions}
+            onChange={(
+              gender: SingleValue<{
+                value: string;
+                label: string;
+              }>
+            ) => {
+              handleFilterChange("gender", gender?.value || "");
+            }}
+          />
           {/* designation filter */}
           <Select
-            onValueChange={(value) => handleFilterChange("designation", value)}
-          >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Designation" />
-            </SelectTrigger>
-            <SelectContent className="h-[150px]">
-              {uniqueDesignations.map((designation) => (
-                <SelectItem value={designation}>{designation}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            ref={designationSelectRef}
+            className="w-[180px]"
+            options={designationOptions}
+            onChange={(
+              designation: SingleValue<{
+                value: string;
+                label: string;
+              }>
+            ) => {
+              handleFilterChange("designation", designation?.value || "");
+            }}
+          />
+
           {/* dob year filter */}
           <Select
-            onValueChange={(value) => handleFilterChange("dobYear", value)}
+            ref={dobYearSelectRef}
+            className="w-[130px]"
+            options={dobYearOptions}
+            onChange={(
+              birthYear: SingleValue<{
+                value: string;
+                label: string;
+              }>
+            ) => {
+              handleFilterChange("dobYear", birthYear?.value || "");
+            }}
+          />
+
+          {/* clear filters button */}
+          <Button 
+            variant="outline" 
+            className="active:scale-95 cursor-pointer"
+            onClick={handleClearFilters}
           >
-            <SelectTrigger className="w-[130px]">
-              <SelectValue placeholder="Birth Year" />
-            </SelectTrigger>
-            <SelectContent className="h-[150px]">
-              {dobYears.map((year) => (
-                <SelectItem value={year}>{year}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            Clear Filters
+          </Button>
         </div>
         {/* User list table */}
         <Table>
@@ -191,7 +243,7 @@ export default function UserList() {
               <TableHead className="dark:text-black">Date of birth</TableHead>
               <TableHead className="dark:text-black">Gender</TableHead>
               <TableHead className="dark:text-black">Designation</TableHead>
-              <TableHead className="text-right dark:text-black">
+              <TableHead className="text-center dark:text-black">
                 Action
               </TableHead>
             </TableRow>
@@ -216,7 +268,7 @@ export default function UserList() {
                     </Badge>
                   </TableCell>
                   <TableCell>{user.designation}</TableCell>
-                  <TableCell className="flex justify-end">
+                  <TableCell className="flex justify-center">
                     <ActionButton id={user.id as number} />
                   </TableCell>
                 </TableRow>

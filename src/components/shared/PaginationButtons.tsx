@@ -51,51 +51,47 @@ export function PaginationButtons({
   return (
     <>
       {totalPages > 1 && (
-        <div className="flex justify-end mt-5">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={() =>
-                    currentPage > 1 && onPageChange(currentPage - 1)
-                  }
-                  className={
-                    currentPage === 1
-                      ? "pointer-events-none opacity-50"
-                      : "cursor-pointer"
-                  }
-                />
+        <Pagination className="flex justify-start w-full mt-5">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
+                className={
+                  currentPage === 1
+                    ? "pointer-events-none opacity-50"
+                    : "cursor-pointer"
+                }
+              />
+            </PaginationItem>
+            {getVisiblePages().map((page, index) => (
+              <PaginationItem key={index}>
+                {page === "..." ? (
+                  <PaginationEllipsis />
+                ) : (
+                  <PaginationLink
+                    onClick={() => onPageChange(page as number)}
+                    isActive={currentPage === page}
+                    className="cursor-pointer"
+                  >
+                    {page}
+                  </PaginationLink>
+                )}
               </PaginationItem>
-              {getVisiblePages().map((page, index) => (
-                <PaginationItem key={index}>
-                  {page === "..." ? (
-                    <PaginationEllipsis />
-                  ) : (
-                    <PaginationLink
-                      onClick={() => onPageChange(page as number)}
-                      isActive={currentPage === page}
-                      className="cursor-pointer"
-                    >
-                      {page}
-                    </PaginationLink>
-                  )}
-                </PaginationItem>
-              ))}
-              <PaginationItem>
-                <PaginationNext
-                  onClick={() =>
-                    currentPage < totalPages && onPageChange(currentPage + 1)
-                  }
-                  className={
-                    currentPage === totalPages
-                      ? "pointer-events-none opacity-50"
-                      : "cursor-pointer"
-                  }
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        </div>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                onClick={() =>
+                  currentPage < totalPages && onPageChange(currentPage + 1)
+                }
+                className={
+                  currentPage === totalPages
+                    ? "pointer-events-none opacity-50"
+                    : "cursor-pointer"
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       )}
     </>
   );

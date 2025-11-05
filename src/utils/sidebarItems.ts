@@ -22,7 +22,7 @@ export const sidebarItems: SidebarItem[] = [
     items: [
       {
         title: "All Users",
-        url: "/dashboard/users",
+        url: "#",
         items: [
           {
             title: "User List",
@@ -31,19 +31,19 @@ export const sidebarItems: SidebarItem[] = [
           },
           {
             title: "Create User",
-            url: "/dashboard/users/create",
+            url: "#",
             items: [
               {
                 title: "Anyting",
-                url: "/dashboar/users/anything",
+                url: "#",
                 items: [
                   {
                     title: "Anyting2",
-                    url: "/dashboar/users/anything2",
+                    url: "#",
                     items: [
                       {
                         title: "Anyting3",
-                        url: "/dashboar/users/anything3",
+                        url: "#",
                         items: [
                           {
                             title: "Anyting4",
@@ -61,7 +61,7 @@ export const sidebarItems: SidebarItem[] = [
       },
       {
         title: "User Management",
-        url: "/dashboard/user-management",
+        url: "#",
         items: [
           {
             title: "Profiles",
@@ -77,7 +77,7 @@ export const sidebarItems: SidebarItem[] = [
   },
   {
     title: "Products",
-    url: "/products",
+    url: "#",
     icon: ShoppingCart,
     items: [
       {
@@ -86,7 +86,7 @@ export const sidebarItems: SidebarItem[] = [
       },
       {
         title: "Categories",
-        url: "/dashboard/categories",
+        url: "#",
         items: [
           {
             title: "Main Categories",

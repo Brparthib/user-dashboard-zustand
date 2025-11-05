@@ -36,7 +36,7 @@ export default function ActionButton({ id }: { id: number }) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Button variant="outline" className="cursor-pointer" size="sm">
+          <Button variant="outline" className="cursor-pointer active:scale-95" size="sm">
             Actions
           </Button>
         </DropdownMenuTrigger>

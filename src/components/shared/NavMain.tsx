@@ -56,7 +56,7 @@ function FlyoutList({ items }: { items: NavNode[] }) {
   const isItemActive = useIsActiveChecker();
 
   return (
-    <ul className="min-w-56 py-1">
+    <ul className="py-1">
       {items.map((item) => {
         const hasChildren = !!item.items?.length;
         const active = isItemActive(item);
@@ -105,7 +105,7 @@ function FlyoutList({ items }: { items: NavNode[] }) {
                 alignOffset={-4}
                 className={[
                   "p-1",
-                  "shadow-lg border rounded-md bg-popover text-popover-foreground",
+                  "shadow-lg border rounded-md w-auto text-popover-foreground",
                 ].join(" ")}
               >
                 <FlyoutList items={item.items!} />
