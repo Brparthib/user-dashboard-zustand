@@ -133,7 +133,6 @@
   }
 }
 
-
 /* sidebar scroll bar custom css */
 .sidebar-scrollbar::-webkit-scrollbar {
   width: 6px;
@@ -178,9 +177,8 @@
 .sidebar-scrollbar {
   overflow-y: auto;
   /* These shadows will naturally only be visible when content overflows */
-  box-shadow: 
-    inset 0 10px 10px -10px rgba(0,0,0,0.1),
-    inset 0 -10px 10px -10px rgba(0,0,0,0.1);
+  box-shadow: inset 0 10px 10px -10px rgba(0, 0, 0, 0.1),
+    inset 0 -10px 10px -10px rgba(0, 0, 0, 0.1);
 }
 
 /* Enhanced version with better visibility control */
@@ -190,25 +188,29 @@
 }
 
 .sidebar-scrollbar::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, transparent 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1) 0%,
+    transparent 100%
+  );
   pointer-events: none;
   z-index: 1;
 }
 
 .sidebar-scrollbar::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(to top, rgba(0,0,0,0.1) 0%, transparent 100%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.1) 0%, transparent 100%);
   pointer-events: none;
   z-index: 1;
 }

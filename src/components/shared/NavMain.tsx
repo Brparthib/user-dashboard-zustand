@@ -38,11 +38,14 @@ interface NavMainProps {
 const OPEN_DELAY = 100;   // ms before opening on hover
 const CLOSE_DELAY = 150;  // ms before closing after leave
 
+// Helper: treat "#" as a pure toggle (no navigation)
+const isToggleOnly = (node: NavNode) => node.url === "#";
+
 // ---- Utility: active route check (recursive) ----
 function useIsActiveChecker() {
   const location = useLocation();
   const isItemActive = React.useCallback((item: NavNode): boolean => {
-    if (location.pathname === item.url) return true;
+    if (item.url !== "#" && location.pathname === item.url) return true;
     if (item.items && item.items.length) {
       return item.items.some((child) => isItemActive(child));
     }
@@ -65,17 +68,32 @@ function FlyoutList({ items }: { items: NavNode[] }) {
         if (!hasChildren) {
           return (
             <li key={item.title}>
-              <Link
-                to={item.url}
-                className={[
-                  "flex w-full items-center gap-2 px-2 py-1.5 rounded-md text-sm my-1",
-                  "hover:bg-accent hover:text-accent-foreground focus:outline-none",
-                  active ? "bg-primary/30 text-black dark:text-primary" : "",
-                ].join(" ")}
-              >
-                {Icon && <Icon className="h-4 w-4 shrink-0" />}
-                <span className="truncate">{item.title}</span>
-              </Link>
+              {isToggleOnly(item) ? (
+                // Toggle-only leaf (rare): just render a non-link button
+                <button
+                  type="button"
+                  className={[
+                    "flex w-full items-center gap-2 px-2 py-1.5 rounded-md text-sm my-1",
+                    "hover:bg-accent hover:text-accent-foreground focus:outline-none",
+                    active ? "bg-primary/30 text-black dark:text-primary" : "",
+                  ].join(" ")}
+                >
+                  {Icon && <Icon className="h-4 w-4 shrink-0" />}
+                  <span className="truncate">{item.title}</span>
+                </button>
+              ) : (
+                <Link
+                  to={item.url}
+                  className={[
+                    "flex w-full items-center gap-2 px-2 py-1.5 rounded-md text-sm my-1",
+                    "hover:bg-accent hover:text-accent-foreground focus:outline-none",
+                    active ? "bg-primary/30 text-black dark:text-primary" : "",
+                  ].join(" ")}
+                >
+                  {Icon && <Icon className="h-4 w-4 shrink-0" />}
+                  <span className="truncate">{item.title}</span>
+                </Link>
+              )}
             </li>
           );
         }
@@ -86,6 +104,7 @@ function FlyoutList({ items }: { items: NavNode[] }) {
             <HoverPopover>
               <PopoverTrigger asChild>
                 <button
+                  type="button"
                   className={[
                     "flex w-full items-center gap-2 px-2 py-1.5 rounded-md text-sm my-1",
                     "hover:bg-accent hover:text-accent-foreground",
@@ -175,15 +194,26 @@ function OpenModeSubtree({ items }: { items: NavNode[] }) {
               <Collapsible asChild defaultOpen={active} className="group/collapsible">
                 <SidebarMenuItem>
                   <CollapsibleTrigger asChild>
-                    <SidebarMenuSubButton className="cursor-pointer" asChild>
-                      <div className="flex items-center w-full">
-                        <Link to={item.url} className="flex items-center gap-2 flex-1 min-w-0">
-                          {Icon && <Icon className="size-4" />}
-                          <span className="truncate">{item.title}</span>
-                        </Link>
-                        <ChevronRight className="ml-2 size-4 shrink-0 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                      </div>
-                    </SidebarMenuSubButton>
+                    {/* If url === "#", render a button so the WHOLE row toggles */}
+                    {isToggleOnly(item) ? (
+                      <SidebarMenuSubButton className="cursor-pointer" asChild>
+                        <button type="button" className="flex items-center w-full">
+                          {Icon && <Icon className="size-4 mr-2" />}
+                          <span className="truncate flex-1 text-left">{item.title}</span>
+                          <ChevronRight className="ml-2 size-4 shrink-0 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                        </button>
+                      </SidebarMenuSubButton>
+                    ) : (
+                      <SidebarMenuSubButton className="cursor-pointer" asChild>
+                        <div className="flex items-center w-full">
+                          <Link to={item.url} className="flex items-center gap-2 flex-1 min-w-0">
+                            {Icon && <Icon className="size-4" />}
+                            <span className="truncate">{item.title}</span>
+                          </Link>
+                          <ChevronRight className="ml-2 size-4 shrink-0 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                        </div>
+                      </SidebarMenuSubButton>
+                    )}
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <OpenModeSubtree items={item.items!} />
@@ -191,11 +221,22 @@ function OpenModeSubtree({ items }: { items: NavNode[] }) {
                 </SidebarMenuItem>
               </Collapsible>
             ) : (
-              <SidebarMenuSubButton className={["cursor-pointer", active ? "bg-primary/30 text-black dark:text-primary" : ""].join(" ")} asChild>
-                <Link to={item.url} className="flex items-center gap-2 min-w-0">
-                  {Icon && <Icon className="size-4" />}
-                  <span className="truncate">{item.title}</span>
-                </Link>
+              <SidebarMenuSubButton
+                className={["cursor-pointer", active ? "bg-primary/30 text-black dark:text-primary" : ""].join(" ")}
+                asChild
+              >
+                {isToggleOnly(item) ? (
+                  // Leaf with "#": render inert button
+                  <button type="button" className="flex items-center gap-2 min-w-0">
+                    {Icon && <Icon className="size-4" />}
+                    <span className="truncate">{item.title}</span>
+                  </button>
+                ) : (
+                  <Link to={item.url} className="flex items-center gap-2 min-w-0">
+                    {Icon && <Icon className="size-4" />}
+                    <span className="truncate">{item.title}</span>
+                  </Link>
+                )}
               </SidebarMenuSubButton>
             )}
           </SidebarMenuSubItem>
@@ -244,10 +285,17 @@ export function NavMain({ items }: NavMainProps) {
                   </HoverPopover>
                 ) : (
                   <SidebarMenuButton asChild className="relative">
-                    <Link to={item.url} className="flex items-center gap-2">
-                      {Icon && <Icon />}
-                      <span className="truncate">{item.title}</span>
-                    </Link>
+                    {isToggleOnly(item) ? (
+                      <button type="button" className="flex items-center gap-2">
+                        {Icon && <Icon />}
+                        <span className="truncate">{item.title}</span>
+                      </button>
+                    ) : (
+                      <Link to={item.url} className="flex items-center gap-2">
+                        {Icon && <Icon />}
+                        <span className="truncate">{item.title}</span>
+                      </Link>
+                    )}
                   </SidebarMenuButton>
                 )}
               </SidebarMenuItem>
@@ -261,11 +309,22 @@ export function NavMain({ items }: NavMainProps) {
                 <Collapsible asChild defaultOpen={active} className="group/collapsible">
                   <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
-                      <SidebarMenuButton className="relative">
-                        {Icon && <Icon />}
-                        <span className="truncate">{item.title}</span>
-                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                      </SidebarMenuButton>
+                      {/* If url === "#", make the WHOLE row a button that toggles */}
+                      {isToggleOnly(item) ? (
+                        <SidebarMenuButton className="relative" asChild>
+                          <button type="button" className="flex w-full items-center">
+                            {Icon && <Icon />}
+                            <span className="truncate">{item.title}</span>
+                            <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                          </button>
+                        </SidebarMenuButton>
+                      ) : (
+                        <SidebarMenuButton className="relative">
+                          {Icon && <Icon />}
+                          <span className="truncate">{item.title}</span>
+                          <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                        </SidebarMenuButton>
+                      )}
                     </CollapsibleTrigger>
                     <CollapsibleContent>
                       <OpenModeSubtree items={item.items!} />
@@ -274,10 +333,17 @@ export function NavMain({ items }: NavMainProps) {
                 </Collapsible>
               ) : (
                 <SidebarMenuButton asChild className="relative">
-                  <Link to={item.url} className="flex items-center gap-2">
-                    {Icon && <Icon />}
-                    <span className="truncate">{item.title}</span>
-                  </Link>
+                  {isToggleOnly(item) ? (
+                    <button type="button" className="flex items-center gap-2">
+                      {Icon && <Icon />}
+                      <span className="truncate">{item.title}</span>
+                    </button>
+                  ) : (
+                    <Link to={item.url} className="flex items-center gap-2">
+                      {Icon && <Icon />}
+                      <span className="truncate">{item.title}</span>
+                    </Link>
+                  )}
                 </SidebarMenuButton>
               )}
             </SidebarMenuItem>

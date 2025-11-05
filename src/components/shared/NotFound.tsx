@@ -30,13 +30,13 @@ export function NotFound() {
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
-            <Button asChild size="lg" className="gap-2">
+            <Button asChild size="lg" className="gap-2 active:scale-95">
               <Link to="/">
                 <Home className="w-4 h-4" />
                 Back to Home
               </Link>
             </Button>
-            <Button variant="outline" asChild size="lg" className="gap-2">
+            <Button variant="outline" asChild size="lg" className="gap-2 active:scale-95">
               <button onClick={() => window.history.back()}>
                 <ArrowLeft className="w-4 h-4" />
                 Go Back

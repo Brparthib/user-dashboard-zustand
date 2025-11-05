@@ -19,10 +19,7 @@ import Select, { type SingleValue } from "react-select";
 import { useEffect, useState, useRef } from "react";
 import Loader from "@/components/shared/Loader";
 import { FunnelPlus, FunnelX } from "lucide-react";
-import {
-  genderOptions,
-  perPageOptions,
-} from "@/constants/selectOptions";
+import { genderOptions, perPageOptions } from "@/constants/selectOptions";
 
 export default function UserList() {
   const {
@@ -46,16 +43,12 @@ export default function UserList() {
 
   const [onFilters, setOnFilters] = useState<boolean>(false);
   const [searchInput, setSearchInput] = useState(searchQuery);
-  
+
   // Refs for select components to clear their values
   const genderSelectRef = useRef<any>(null);
   const designationSelectRef = useRef<any>(null);
   const dobYearSelectRef = useRef<any>(null);
 
-  // get unique gender and designation for filters
-  // const uniqueGenders = Array.from(
-  //   new Set(useUserStore.getState().users.map((user) => user.gender))
-  // );
   const uniqueDesignations = Array.from(
     new Set(useUserStore.getState().users.map((user) => user.designation))
   );
@@ -93,10 +86,10 @@ export default function UserList() {
       designation: "",
       dobYear: "",
     });
-    
+
     // Clear search input
     setSearchInput("");
-    
+
     // Clear select components using refs
     if (genderSelectRef.current) {
       genderSelectRef.current.setValue(null);
@@ -115,11 +108,6 @@ export default function UserList() {
   if (loading) {
     return <Loader />;
   }
-
-  // const genderOptions = uniqueGenders.map((gender) => ({
-  //   value: gender,
-  //   label: gender
-  // }))
 
   const designationOptions = uniqueDesignations.map((designation) => ({
     value: designation,
@@ -145,16 +133,19 @@ export default function UserList() {
             {onFilters ? <FunnelPlus /> : <FunnelX />}
           </Button>
           {/* user per page */}
-          <Select
-            className="w-[100px]"
-            options={perPageOptions}
-            onChange={(
-              value: SingleValue<{
-                value: number;
-                label: number;
-              }>
-            ) => setItemsPerPage(Number(value?.value))}
-          />
+          <div className="react-select-container">
+            <Select
+              classNamePrefix="react-select"
+              className="w-[100px]"
+              options={perPageOptions}
+              onChange={(
+                value: SingleValue<{
+                  value: number;
+                  label: number;
+                }>
+              ) => setItemsPerPage(Number(value?.value))}
+            />
+          </div>
           {/* create user button */}
           <Button
             onClick={() => {
@@ -224,8 +215,8 @@ export default function UserList() {
           />
 
           {/* clear filters button */}
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="active:scale-95 cursor-pointer"
             onClick={handleClearFilters}
           >
