@@ -7,11 +7,11 @@ export default function Overview() {
   const { users, getTotalByGender } = useUserStore();
   return (
     <>
-      <div className="p-6 space-y-6 w-full">
+      <div className="p-6 space-y-4 w-full">
         {/* Top Grid: Users */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* total user */}
-          <Card className="bg-linear-to-r from-amber-500 to-orange-600 text-white">
+          <Card className="gap-2 py-4 h-[130px] bg-linear-to-r from-amber-500 to-orange-600 text-white">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="w-6 h-6" /> Total Users
@@ -23,7 +23,7 @@ export default function Overview() {
             </CardContent>
           </Card>
           {/* total male user */}
-          <Card className="bg-linear-to-r from-emerald-500 to-teal-600 text-white">
+          <Card className="gap-2 py-4 h-[130px] bg-linear-to-r from-emerald-500 to-teal-600 text-white">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="w-6 h-6" /> Total Male
@@ -39,7 +39,7 @@ export default function Overview() {
             </CardContent>
           </Card>
           {/* total female user */}
-          <Card className="bg-linear-to-r from-sky-500 to-blue-600 text-white">
+          <Card className="gap-2 py-4 h-[130px] bg-linear-to-r from-sky-500 to-blue-600 text-white">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Users className="w-6 h-6" /> Total Female

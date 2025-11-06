@@ -19,12 +19,17 @@ import Select, { type SingleValue } from "react-select";
 import { useEffect, useState, useRef } from "react";
 import Loader from "@/components/shared/Loader";
 import { FunnelPlus, FunnelX } from "lucide-react";
-import { genderOptions, perPageOptions } from "@/constants/selectOptions";
+import {
+  defaultPerPage,
+  genderOptions,
+  perPageOptions,
+} from "@/constants/selectOptions";
 
 export default function UserList() {
   const {
     modalOpen,
     setModalOpen,
+    setSelectedUserId,
     formType,
     setFormType,
     alertOpen,
@@ -133,27 +138,28 @@ export default function UserList() {
             {onFilters ? <FunnelPlus /> : <FunnelX />}
           </Button>
           {/* user per page */}
-          <div className="react-select-container">
-            <Select
-              classNamePrefix="react-select"
-              className="w-[100px]"
-              options={perPageOptions}
-              onChange={(
-                value: SingleValue<{
-                  value: number;
-                  label: number;
-                }>
-              ) => setItemsPerPage(Number(value?.value))}
-            />
-          </div>
+          <Select
+            unstyled
+            className="react-select-shadcn w-20"
+            classNamePrefix="react-select"
+            options={perPageOptions}
+            defaultValue={defaultPerPage}
+            onChange={(
+              value: SingleValue<{
+                value: number;
+                label: number;
+              }>
+            ) => setItemsPerPage(Number(value?.value))}
+          />
           {/* create user button */}
           <Button
             onClick={() => {
+              setSelectedUserId(0);
               setFormType("create");
               setModalOpen(true);
             }}
             variant="outline"
-            className="hover:bg-primary hover:text-white transition-all duration-300 active:scale-95 cursor-pointer"
+            className="bg-linear-to-b border-none from-sky-50 to-blue-200 hover:from-sky-100 hover:to-blue-300 text-zinc-600 hover:text-zinc-800 font-normal active:scale-95 cursor-pointer transition-all duration-300"
             size="sm"
           >
             Create User
@@ -166,14 +172,17 @@ export default function UserList() {
           {/* search input */}
           <Input
             placeholder="Search by name, email or phone."
-            className="md:w-[250px]"
+            className="md:w-[250px] h-8 focus-visible:ring-0"
             value={searchInput}
             onChange={(e) => setSearchInput(e.target.value)}
           />
           {/* gender filter */}
           <Select
+            unstyled
             ref={genderSelectRef}
-            className="w-[150px]"
+            className="react-select-shadcn w-[150px]"
+            classNamePrefix="react-select"
+            placeholder="Gender"
             options={genderOptions}
             onChange={(
               gender: SingleValue<{
@@ -186,8 +195,11 @@ export default function UserList() {
           />
           {/* designation filter */}
           <Select
+            unstyled
             ref={designationSelectRef}
-            className="w-[180px]"
+            className="react-select-shadcn w-36"
+            classNamePrefix="react-select"
+            placeholder="Designation"
             options={designationOptions}
             onChange={(
               designation: SingleValue<{
@@ -201,9 +213,12 @@ export default function UserList() {
 
           {/* dob year filter */}
           <Select
+            unstyled
             ref={dobYearSelectRef}
-            className="w-[130px]"
+            className="react-select-shadcn w-30"
+            classNamePrefix="react-select"
             options={dobYearOptions}
+            placeholder="Birth Year"
             onChange={(
               birthYear: SingleValue<{
                 value: string;
@@ -217,26 +232,25 @@ export default function UserList() {
           {/* clear filters button */}
           <Button
             variant="outline"
-            className="active:scale-95 cursor-pointer"
+            className="bg-linear-to-b border-none from-rose-50 to-red-200 hover:from-rose-100 hover:to-red-300 text-red-700 hover:text-red-700 font-normal active:scale-95 cursor-pointer transition-all duration-300"
             onClick={handleClearFilters}
+            size="sm"
           >
             Clear Filters
           </Button>
         </div>
         {/* User list table */}
         <Table>
-          <TableHeader className="bg-primary">
+          <TableHeader className="bg-primary dark:bg-primary/20">
             <TableRow>
-              <TableHead className="w-[100px] dark:text-black">Index</TableHead>
-              <TableHead className="dark:text-black">Name</TableHead>
-              <TableHead className="dark:text-black">Email</TableHead>
-              <TableHead className="dark:text-black">Phone</TableHead>
-              <TableHead className="dark:text-black">Date of birth</TableHead>
-              <TableHead className="dark:text-black">Gender</TableHead>
-              <TableHead className="dark:text-black">Designation</TableHead>
-              <TableHead className="text-center dark:text-black">
-                Action
-              </TableHead>
+              <TableHead className="w-[100px] ">Index</TableHead>
+              <TableHead className="">Name</TableHead>
+              <TableHead className="">Email</TableHead>
+              <TableHead className="">Phone</TableHead>
+              <TableHead className="">Date of birth</TableHead>
+              <TableHead className="">Gender</TableHead>
+              <TableHead className="">Designation</TableHead>
+              <TableHead className="text-center ">Action</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -253,7 +267,7 @@ export default function UserList() {
                   <TableCell>
                     <Badge
                       variant="secondary"
-                      className="select-none capitalize dark:bg-primary dark:text-black"
+                      className="select-none capitalize w-16 dark:bg-primary/30 dark:text-primary"
                     >
                       {user.gender}
                     </Badge>

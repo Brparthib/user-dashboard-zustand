@@ -55,7 +55,7 @@ export default function DateInput() {
           id="date"
           value={value}
           placeholder="June 01, 2025"
-          className="bg-background pr-10"
+          className="bg-background pr-10 h-8 focus-visible:ring-0"
           onChange={(e) => {
             const date = new Date(e.target.value);
             setValue(e.target.value);

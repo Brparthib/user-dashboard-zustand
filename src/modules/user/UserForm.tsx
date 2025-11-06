@@ -90,8 +90,6 @@ export function UserForm() {
     reader.readAsDataURL(file);
   };
 
-  console.log("Skills: ", skills);
-
   // form submission
   const onSubmit = async (data: FormData) => {
     const toastId = selectedUserId
@@ -119,6 +117,11 @@ export function UserForm() {
     }
   };
 
+  const defaultDesignation = {
+    value: getUser(selectedUserId as number)?.designation as string,
+    label: getUser(selectedUserId as number)?.designation as string,
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -132,7 +135,7 @@ export function UserForm() {
                 <FormLabel className="text-sm">Full Name</FormLabel>
                 <FormControl>
                   <Input
-                    className="text-xs"
+                    className="text-xs h-8 focus-visible:ring-0"
                     placeholder="Your full name"
                     {...field}
                   />
@@ -149,7 +152,7 @@ export function UserForm() {
                 <FormLabel className="text-sm">Email</FormLabel>
                 <FormControl>
                   <Input
-                    className="text-xs"
+                    className="text-xs h-8 focus-visible:ring-0"
                     placeholder="Your email address"
                     {...field}
                   />
@@ -160,16 +163,16 @@ export function UserForm() {
           />
         </div>
         {/* phone and designation field */}
-        <div className="md:flex justify-between items-start gap-4">
+        <div className="md:flex justify-between items-center gap-4">
           <FormField
             control={form.control}
             name="phone"
             render={({ field }) => (
-              <FormItem className="grow">
+              <FormItem className="w-1/2">
                 <FormLabel className="text-sm">Phone</FormLabel>
                 <FormControl>
                   <Input
-                    className="text-xs"
+                    className="text-xs h-8 focus-visible:ring-0"
                     placeholder="Your email address"
                     {...field}
                   />
@@ -179,11 +182,15 @@ export function UserForm() {
             )}
           />
           {/* select */}
-          <div className="grow">
-            <Label className="mb-2">Designation</Label>
+          <div className="w-1/2">
+            <Label className="mb-3">Designation</Label>
             <Select
-              className="w-full"
+              unstyled
+              className="react-select-shadcn"
+              classNamePrefix="react-select"
               options={designations}
+              defaultValue={defaultDesignation}
+              placeholder="Select designation"
               onChange={(
                 value: SingleValue<{ value: string; label: string }>
               ) => setDesignation(value?.value as string)}
@@ -219,6 +226,9 @@ export function UserForm() {
         <div className="">
           <Label className="mb-2">Skills</Label>
           <Select
+            unstyled
+            className="react-select-shadcn"
+            classNamePrefix="react-select"
             defaultValue={[skillOptions[1], skillOptions[2]]}
             isMulti
             name="skills"
@@ -229,7 +239,6 @@ export function UserForm() {
               const selectedSkills = values.map((v) => v.value);
               setSkills(selectedSkills);
             }}
-            classNamePrefix="select"
           />
         </div>
         {/* bio field */}
@@ -242,7 +251,7 @@ export function UserForm() {
                 <FormLabel className="text-sm">Bio</FormLabel>
                 <FormControl>
                   <Textarea
-                    className="text-xs"
+                    className="text-xs focus-visible:ring-0"
                     placeholder="Your full name"
                     {...field}
                   />

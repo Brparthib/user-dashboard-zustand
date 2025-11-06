@@ -16,7 +16,7 @@ interface AlertDialogProps {
 }
 
 export default function Alert({ isOpen, onClose }: AlertDialogProps) {
-  const { deleteUser, seletedUserId } = useUserStore();
+  const { selectedUserId, deleteUser } = useUserStore();
   return (
     <AlertDialog open={isOpen} onOpenChange={onClose}>
       <AlertDialogContent>
@@ -28,10 +28,15 @@ export default function Alert({ isOpen, onClose }: AlertDialogProps) {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel className="cursor-pointer">
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction
+            className="bg-linear-to-b border-none from-rose-50 to-red-200 
+            hover:from-rose-100 hover:to-red-300 text-red-700 hover:text-red-700 
+            font-normal active:scale-95 cursor-pointer transition-all duration-300"
             onClick={() => {
-              deleteUser(seletedUserId as number);
+              deleteUser(selectedUserId as number);
             }}
           >
             Confirm

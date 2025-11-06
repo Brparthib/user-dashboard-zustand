@@ -58,7 +58,7 @@ export const useUserStore = create<UserState>((set, get) => ({
   },
   searchQuery: "",
   currentPage: 1,
-  itemsPerPage: 5,
+  itemsPerPage: 4,
   sidebarOpen: true,
   loading: false,
 

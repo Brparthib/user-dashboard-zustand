@@ -17,39 +17,33 @@ export const sidebarItems: SidebarItem[] = [
   },
   {
     title: "Users",
-    url: "/users",
+    url: "#",
     icon: Users,
     items: [
       {
-        title: "All Users",
+        title: "User List",
+        url: "/dashboard/users/list",
+        component: UserList,
+      },
+      { 
+        title: "Create User",
         url: "#",
         items: [
           {
-            title: "User List",
-            url: "/dashboard/users/list",
-            component: UserList,
-          },
-          {
-            title: "Create User",
+            title: "Anything",
             url: "#",
             items: [
               {
-                title: "Anyting",
+                title: "Anything2",
                 url: "#",
                 items: [
                   {
-                    title: "Anyting2",
+                    title: "Anything3",
                     url: "#",
                     items: [
                       {
-                        title: "Anyting3",
-                        url: "#",
-                        items: [
-                          {
-                            title: "Anyting4",
-                            url: "/dashboar/users/anything4",
-                          },
-                        ],
+                        title: "Anything4",
+                        url: "/dashboar/users/anything4",
                       },
                     ],
                   },

@@ -22,9 +22,9 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { sidebarOpen } = useUserStore();
-  
+
   return (
-    <Sidebar collapsible="icon" {...props}>
+    <Sidebar className="border-dotted min-w-16" collapsible="icon" {...props}>
       <SidebarHeader>
         {sidebarOpen ? (
           <h4 className="text-2xl text-center font-medium">User Dashboard</h4>
@@ -32,7 +32,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <h4 className="text-xl text-center font-medium">UD</h4>
         )}
       </SidebarHeader>
-      <SidebarContent className="h-screen overflow-y-auto sidebar-scrollbar shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]">
+      <SidebarContent className="mt-4 h-screen overflow-y-auto sidebar-scrollbar shadow-[inset_0_2px_4px_rgba(0,0,0,0.2)]">
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarRail />

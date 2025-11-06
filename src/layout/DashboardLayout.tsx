@@ -8,7 +8,6 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
 import {
   SidebarInset,
   SidebarProvider,
@@ -29,16 +28,18 @@ export default function DashboardLayout() {
       open={sidebarOpen}
       onOpenChange={() => setSidebarOpen(!sidebarOpen)}
     >
-      <AppSidebar />
-      <SidebarInset>
+      <div className="relative">
+        <AppSidebar />
+        <SidebarTrigger
+          className={`absolute ${
+            sidebarOpen ? "-right-3" : "-right-7"
+          } top-12 dark:text-black z-50 active:scale-95 bg-primary dark:bg-muted-foreground dark:hover:bg-primary border border-muted`}
+        />
+      </div>
+      <SidebarInset className="">
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
           <div className="flex w-full justify-between items-center gap-2 px-4">
-            <div className="flex items-center gap-2">
-              <SidebarTrigger className="-ml-1" />
-              <Separator
-                orientation="vertical"
-                className="mr-2 data-[orientation=vertical]:h-4"
-              />
+            <div className="ml-5">
               <Breadcrumb>
                 <BreadcrumbList>
                   {pathSegments.map((segments, index) => {

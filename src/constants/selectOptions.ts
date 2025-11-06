@@ -43,4 +43,4 @@ export const perPageOptions = [
   { value: 10, label: 10 },
 ];
 
-export const defaultPerPage = { value: 2, label: 2 };
+export const defaultPerPage = { value: 4, label: 4 };
