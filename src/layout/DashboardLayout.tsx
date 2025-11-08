@@ -33,7 +33,7 @@ export default function DashboardLayout() {
         <SidebarTrigger
           className={`absolute ${
             sidebarOpen ? "-right-3" : "-right-7"
-          } top-12 dark:text-black z-50 active:scale-95 bg-primary dark:bg-muted-foreground dark:hover:bg-primary border border-muted`}
+          } top-12 dark:text-white z-50 active:scale-95 bg-sidebar dark:bg-background dark:hover:bg-primary dark:hover:text-black border border-muted`}
         />
       </div>
       <SidebarInset className="">

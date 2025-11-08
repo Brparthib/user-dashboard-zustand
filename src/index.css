@@ -321,6 +321,22 @@
   /* Menu list */
   .react-select__menu-list {
     padding: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  /* ===== Scrollbar Styling ===== */
+  .react-select__menu-list::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .react-select__menu-list::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: rgba(100, 116, 139, 0.5); /* Light mode default */
+  }
+
+  .react-select__menu-list::-webkit-scrollbar-track {
+    background-color: rgba(241, 245, 249, 0.5); /* Light mode default */
   }
 
   /* Option */
@@ -407,7 +423,6 @@
 
   /* ===== DARK MODE SUPPORT ===== */
   
-  /* Automatic dark mode */
   @media (prefers-color-scheme: dark) {
     .react-select__control {
       border-color: var(--border);
@@ -429,16 +444,33 @@
       background-color: var(--popover);
     }
 
+    .react-select__option {
+      margin: 5px 0;
+    }
+
     .react-select__option--is-focused {
       background-color: var(--accent);
+    }
+    
+    .react-select__option:hover {
+      background-color: rgba(178, 210, 232, 0.3);
     }
 
     .react-select__multi-value__remove:hover {
       background-color: color-mix(in oklch, var(--primary), white 10%);
     }
+
+    /* Dark mode scrollbar */
+    .react-select__menu-list::-webkit-scrollbar-thumb {
+      background-color: rgba(148, 163, 184, 0.6);
+    }
+
+    .react-select__menu-list::-webkit-scrollbar-track {
+      background-color: rgba(30, 41, 59, 0.6);
+      border-radius: 10px;
+    }
   }
 
-  /* Manual dark mode class (shadcn) */
   .dark .react-select__control {
     border-color: var(--border);
     background-color: color-mix(in oklch, var(--input), transparent 70%);
@@ -465,6 +497,15 @@
 
   .dark .react-select__multi-value__remove:hover {
     background-color: color-mix(in oklch, var(--primary), white 10%);
+  }
+
+  /* Dark mode scrollbar for manual class */
+  .dark .react-select__menu-list::-webkit-scrollbar-thumb {
+    background-color: rgba(148, 163, 184, 0.6);
+  }
+
+  .dark .react-select__menu-list::-webkit-scrollbar-track {
+    background-color: rgba(30, 41, 59, 0.6);
   }
 }
 
@@ -493,5 +534,6 @@
   padding: 10px 14px;
   font-size: 15px;
 }
+
 
 

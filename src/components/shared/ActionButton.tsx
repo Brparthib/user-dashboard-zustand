@@ -2,8 +2,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "../ui/button";
@@ -11,6 +9,7 @@ import { useUserStore } from "@/store/userStore";
 import UserDetailsPrint from "@/modules/user/UserDetailsPrint";
 import { useRef } from "react";
 import { useReactToPrint } from "react-to-print";
+import { ChevronDownIcon } from "lucide-react";
 
 export default function ActionButton({ id }: { id: number }) {
   const contentRef = useRef<HTMLDivElement>(null);
@@ -36,13 +35,16 @@ export default function ActionButton({ id }: { id: number }) {
     <>
       <DropdownMenu>
         <DropdownMenuTrigger>
-          <Button variant="outline" className="cursor-pointer active:scale-95" size="sm">
+          <Button
+            variant="outline"
+            className="cursor-pointer active:scale-95 flex items-center"
+            size="sm"
+          >
             Actions
+            <ChevronDownIcon />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Take Actions</DropdownMenuLabel>
-          <DropdownMenuSeparator />
           <DropdownMenuItem onClick={reactToPrintFn} className="cursor-pointer">
             Print
           </DropdownMenuItem>

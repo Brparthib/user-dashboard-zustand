@@ -24,6 +24,7 @@ import {
   genderOptions,
   perPageOptions,
 } from "@/constants/selectOptions";
+import CustomButton from "@/components/shared/Button";
 
 export default function UserList() {
   const {
@@ -152,18 +153,15 @@ export default function UserList() {
             ) => setItemsPerPage(Number(value?.value))}
           />
           {/* create user button */}
-          <Button
+          <CustomButton
+            className=""
+            title="Custom Button"
             onClick={() => {
               setSelectedUserId(0);
               setFormType("create");
               setModalOpen(true);
             }}
-            variant="outline"
-            className="bg-linear-to-b border-none from-sky-50 to-blue-200 hover:from-sky-100 hover:to-blue-300 text-zinc-600 hover:text-zinc-800 font-normal active:scale-95 cursor-pointer transition-all duration-300"
-            size="sm"
-          >
-            Create User
-          </Button>
+          />
         </div>
         {/* filters */}
         <div
@@ -230,14 +228,11 @@ export default function UserList() {
           />
 
           {/* clear filters button */}
-          <Button
-            variant="outline"
-            className="bg-linear-to-b border-none from-rose-50 to-red-200 hover:from-rose-100 hover:to-red-300 text-red-700 hover:text-red-700 font-normal active:scale-95 cursor-pointer transition-all duration-300"
+          <CustomButton
+            className="from-rose-50 to-rose-300 hover:from-rose-100 hover:to-rose-300 text-rose-700 hover:text-rose-800 py-[6px]"
+            title="Clear Filters"
             onClick={handleClearFilters}
-            size="sm"
-          >
-            Clear Filters
-          </Button>
+          />
         </div>
         {/* User list table */}
         <Table>
@@ -263,7 +258,13 @@ export default function UserList() {
                   <TableCell>{user.name}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.phone}</TableCell>
-                  <TableCell>{user.dob}</TableCell>
+                  <TableCell>
+                    {new Date(user.dob).toLocaleDateString("en-US", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </TableCell>
                   <TableCell>
                     <Badge
                       variant="secondary"
