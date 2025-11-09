@@ -7,9 +7,9 @@ export default function Overview() {
   const { users, getTotalByGender } = useUserStore();
   return (
     <>
-      <div className="p-6 space-y-4 w-full">
+      <div className="px-6 w-full">
         {/* Top Grid: Users */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
           {/* total user */}
           <Card className="gap-2 py-4 h-[130px] bg-linear-to-r from-amber-500 to-orange-600 text-white">
             <CardHeader>

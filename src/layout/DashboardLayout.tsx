@@ -32,8 +32,8 @@ export default function DashboardLayout() {
         <AppSidebar />
         <SidebarTrigger
           className={`absolute ${
-            sidebarOpen ? "-right-3" : "-right-7"
-          } top-12 dark:text-white z-50 active:scale-95 bg-sidebar dark:bg-background dark:hover:bg-primary dark:hover:text-black border border-muted`}
+            sidebarOpen ? "-right-3 rotate-180" : "-right-7"
+          } top-12 dark:text-white z-50 active:scale-95 bg-sidebar dark:bg-background dark:hover:bg-primary dark:hover:text-black border border-muted duration-300`}
         />
       </div>
       <SidebarInset className="">

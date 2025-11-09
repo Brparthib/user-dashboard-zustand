@@ -122,6 +122,15 @@ export function UserForm() {
     label: getUser(selectedUserId as number)?.designation as string,
   };
 
+  const defaultGender = getUser(selectedUserId as number)?.gender;
+
+  const defaultSkills = getUser(selectedUserId as number)?.skills?.map(
+    (skill: string) => ({
+      value: skill,
+      label: skill,
+    })
+  );
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -213,7 +222,14 @@ export function UserForm() {
             >
               {["male", "female"].map((gender, i) => (
                 <div key={i} className="flex items-center space-x-2">
-                  <RadioGroupItem value={gender} id={gender} />
+                  <RadioGroupItem
+                    defaultChecked={
+                      gender === defaultGender || gender === "Male"
+                    }
+                    defaultValue={defaultGender}
+                    value={gender}
+                    id={gender}
+                  />
                   <Label htmlFor="option-one" className="capitalize">
                     {gender}
                   </Label>
@@ -229,7 +245,7 @@ export function UserForm() {
             unstyled
             className="react-select-shadcn"
             classNamePrefix="react-select"
-            defaultValue={[skillOptions[1], skillOptions[2]]}
+            defaultValue={defaultSkills}
             isMulti
             name="skills"
             options={skillOptions}

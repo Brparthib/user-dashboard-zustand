@@ -70,7 +70,7 @@ export function DesignationChart() {
       <CardContent>
         {/* Slightly smaller chart */}
         <div className="w-full overflow-x-auto">
-          <ChartContainer config={chartConfig} className="h-[260px]">
+          <ChartContainer config={chartConfig} className="h-[230px] w-[700px] mx-auto">
             <BarChart
               accessibilityLayer
               data={chartData}
@@ -107,7 +107,7 @@ export function DesignationChart() {
 
         {/* Collapsible Designation Breakdown */}
         <Collapsible open={open} onOpenChange={setOpen} className="mt-6">
-          <CollapsibleTrigger className="flex items-center justify-between w-full text-sm font-medium">
+          <CollapsibleTrigger className="flex items-center gap-2 text-sm font-medium cursor-pointer">
             Designation Breakdown
             <ChevronDown
               className={`h-4 w-4 transition-transform duration-200 ${
@@ -133,19 +133,18 @@ export function DesignationChart() {
                 </div>
               </div>
             ))}
+            <div className="flex-col items-start gap-2 text-sm mt-5">
+              <div className="flex gap-2 leading-none font-medium">
+                Total {totalUsers} users across {totalDesignations} designations
+                <TrendingUp className="h-4 w-4" />
+              </div>
+              <div className="text-muted-foreground leading-none">
+                Showing distribution of users by their job roles and gender
+              </div>
+            </div>
           </CollapsibleContent>
         </Collapsible>
       </CardContent>
-
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 leading-none font-medium">
-          Total {totalUsers} users across {totalDesignations} designations
-          <TrendingUp className="h-4 w-4" />
-        </div>
-        <div className="text-muted-foreground leading-none">
-          Showing distribution of users by their job roles and gender
-        </div>
-      </CardFooter>
     </Card>
   );
 }

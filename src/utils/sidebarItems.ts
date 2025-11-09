@@ -1,3 +1,9 @@
+import Anything4 from "@/modules/user/Anything4";
+import MainCategories from "@/modules/user/MainCategories";
+import ProductList from "@/modules/user/ProductList";
+import Report from "@/modules/user/Report";
+import Setting from "@/modules/user/Setting";
+import SubCategories from "@/modules/user/SubCategories";
 import UserList from "@/modules/user/UserList";
 import type { SidebarItem } from "@/types/sidebar";
 import {
@@ -25,7 +31,7 @@ export const sidebarItems: SidebarItem[] = [
         url: "/dashboard/users/list",
         component: UserList,
       },
-      { 
+      {
         title: "Create User",
         url: "#",
         items: [
@@ -44,6 +50,7 @@ export const sidebarItems: SidebarItem[] = [
                       {
                         title: "Anything4",
                         url: "/dashboar/users/anything4",
+                        component: Anything4
                       },
                     ],
                   },
@@ -77,6 +84,7 @@ export const sidebarItems: SidebarItem[] = [
       {
         title: "Product List",
         url: "/dashboard/products",
+        component: ProductList,
       },
       {
         title: "Categories",
@@ -85,10 +93,12 @@ export const sidebarItems: SidebarItem[] = [
           {
             title: "Main Categories",
             url: "/dashboard/categories/main",
+            component: MainCategories
           },
           {
             title: "Sub Categories",
             url: "/dashboard/categories/sub",
+            component: SubCategories
           },
         ],
       },
@@ -98,10 +108,12 @@ export const sidebarItems: SidebarItem[] = [
     title: "Reports",
     url: "/dashboard/reports",
     icon: FileText,
+    component: Report,
   },
   {
     title: "Settings",
     url: "/dashboard/settings",
     icon: Settings,
+    component: Setting,
   },
 ];

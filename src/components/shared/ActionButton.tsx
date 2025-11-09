@@ -7,11 +7,12 @@ import {
 import { Button } from "../ui/button";
 import { useUserStore } from "@/store/userStore";
 import UserDetailsPrint from "@/modules/user/UserDetailsPrint";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useReactToPrint } from "react-to-print";
 import { ChevronDownIcon } from "lucide-react";
 
 export default function ActionButton({ id }: { id: number }) {
+  const [openAction, setOpenAction] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const reactToPrintFn = useReactToPrint({
     contentRef,
@@ -33,15 +34,23 @@ export default function ActionButton({ id }: { id: number }) {
     useUserStore();
   return (
     <>
-      <DropdownMenu>
+      <DropdownMenu
+        open={openAction}
+        onOpenChange={() => setOpenAction(!openAction)}
+      >
         <DropdownMenuTrigger>
           <Button
             variant="outline"
             className="cursor-pointer active:scale-95 flex items-center"
             size="sm"
+            onClick={() => setOpenAction(!openAction)}
           >
             Actions
-            <ChevronDownIcon />
+            <ChevronDownIcon
+              className={
+                openAction ? "-rotate-180 duration-300" : "duration-300"
+              }
+            />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">

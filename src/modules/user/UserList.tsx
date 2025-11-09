@@ -155,7 +155,7 @@ export default function UserList() {
           {/* create user button */}
           <CustomButton
             className=""
-            title="Custom Button"
+            title="Create User"
             onClick={() => {
               setSelectedUserId(0);
               setFormType("create");
@@ -228,8 +228,9 @@ export default function UserList() {
           />
 
           {/* clear filters button */}
+          {/* from-rose-50 to-rose-300 */}
           <CustomButton
-            className="from-rose-50 to-rose-300 hover:from-rose-100 hover:to-rose-300 text-rose-700 hover:text-rose-800 py-[6px]"
+            className="from-rose-50 to-rose-300 hover:from-rose-100 hover:to-rose-300 dark:from-rose-100 dark:to-rose-300 dark:hover:from-rose-200 dark:hover:to-rose-400 text-rose-800 hover:text-rose-800 dark:text-rose-900 py-1.5"
             title="Clear Filters"
             onClick={handleClearFilters}
           />
